@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const posts = require("./routers/posts");
+const posts = require("./routes/posts");
 
 const Post = require("./models/Post");
 

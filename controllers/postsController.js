@@ -1,24 +1,13 @@
-const express = require("express");
 const Post = require("../models/Post");
 
-const router = express.Router();
-
-router.get("/", async (req, res) => {
+// Get all posts
+module.exports.getAllPosts = async (req, res) => {
   const posts = await Post.find();
   res.send(posts);
-});
+};
 
-router.post("/", async (req, res) => {
-  const input = {
-    title: req.body.title,
-    content: req.body.content,
-  };
-  const post = new Post(input);
-  await post.save();
-  res.send(post);
-});
-
-router.get("/:id", async (req, res) => {
+// Get a post by its ID
+module.exports.getPost = async (req, res) => {
   const postId = req.params.id;
   try {
     const post = await Post.findOne({ _id: postId });
@@ -26,9 +15,21 @@ router.get("/:id", async (req, res) => {
   } catch (e) {
     res.status(404).send("Blog not found");
   }
-});
+};
 
-router.patch("/:id", async (req, res) => {
+// Create new post
+module.exports.newPost = async (req, res) => {
+  const input = {
+    title: req.body.title,
+    content: req.body.content,
+  };
+  const post = new Post(input);
+  await post.save();
+  res.send(post);
+};
+
+// Update a post
+module.exports.updatePost = async (req, res) => {
   try {
     const postId = req.params.id;
     const post = await Post.findOne({ _id: postId });
@@ -46,9 +47,10 @@ router.patch("/:id", async (req, res) => {
   } catch (err) {
     res.status(404).send({ error: "Post doesn't exist" });
   }
-});
+};
 
-router.delete("/:id", async (req, res) => {
+// Delete post from DB
+module.exports.deletePost = async (req, res) => {
   const postId = req.params.id;
   try {
     await Post.deleteOne({ _id: postId });
@@ -56,6 +58,4 @@ router.delete("/:id", async (req, res) => {
   } catch (e) {
     res.status(404).send({ error: "Post doesn't exist" });
   }
-});
-
-module.exports = router;
+};
