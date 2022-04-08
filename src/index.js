@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+
 const posts = require("./routes/posts");
 
 const app = express();
@@ -19,6 +21,7 @@ mongoose
 // Start Server
 
 app.use(express.json());
+app.use(bodyParser.json());
 
 app.use("/api/posts", posts);
 
